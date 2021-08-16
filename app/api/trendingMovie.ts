@@ -1,4 +1,4 @@
-import axios, {AxiosError, ResponseType} from 'axios';
+import axios, {AxiosError} from 'axios';
 import Config from 'react-native-config';
 import {ResponseData, ResponseError} from './types';
 

@@ -4,6 +4,5 @@ export type ResponseData<D> = {
 };
 
 export interface ResponseError {
-  errors?: any;
-  message?: string;
+  message: string;
 }
