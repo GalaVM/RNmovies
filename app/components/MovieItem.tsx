@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {blackText, gray} from '../styles/constants';
+import {blackText, gray, screenWidth} from '../styles/constants';
 
 interface MovieItemProps {
   imagePath: string | null;
@@ -46,6 +46,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
     color: blackText,
-    width: 120,
+    width: screenWidth * 0.46,
   },
 });
