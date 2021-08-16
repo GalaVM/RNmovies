@@ -9,16 +9,10 @@
  */
 
 import React from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
+import {RootStack} from './app/navigation/RootStack';
 
 const App = () => {
-  return (
-    <SafeAreaView>
-      <View>
-        <Text>Movies</Text>
-      </View>
-    </SafeAreaView>
-  );
+  return <RootStack />;
 };
 
 export default App;
