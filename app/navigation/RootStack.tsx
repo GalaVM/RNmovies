@@ -33,6 +33,7 @@ export const RootStack = () => {
         <Stack.Screen
           options={{
             headerShown: true,
+            headerBackTitle: 'Back',
           }}
           name={ScreenEnum.DetailsScreen}
           component={DetailsGeneralScreen}

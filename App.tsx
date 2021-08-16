@@ -8,11 +8,22 @@
  * @format
  */
 
+import 'react-native-gesture-handler';
 import React from 'react';
 import {RootStack} from './app/navigation/RootStack';
 
+import {Provider} from 'react-redux';
+import {store, persistor} from './app/redux/store';
+import {PersistGate} from 'redux-persist/integration/react';
+
 const App = () => {
-  return <RootStack />;
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <RootStack />
+      </PersistGate>
+    </Provider>
+  );
 };
 
 export default App;
