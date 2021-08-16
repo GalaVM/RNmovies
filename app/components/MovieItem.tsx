@@ -1,6 +1,9 @@
 import React from 'react';
-import {View, Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import Config from 'react-native-config';
+import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {blackText, gray, screenWidth} from '../styles/constants';
+
+const API_IMAGE_URI = Config.API_IMAGE_URL;
 
 interface MovieItemProps {
   imagePath: string | null;
@@ -21,7 +24,7 @@ export const MovieItem = ({
           style={styles.img}
           resizeMode="contain"
           source={{
-            uri: `https://image.tmdb.org/t/p/w500${imagePath}`,
+            uri: `${API_IMAGE_URI}${imagePath}`,
           }}
         />
       )}
