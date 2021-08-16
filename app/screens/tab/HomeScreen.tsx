@@ -20,6 +20,7 @@ import {Loader} from '../../components/Loader';
 import {MovieItem} from '../../components/MovieItem';
 import {white} from '../../styles/constants';
 import {LoaderActivityIndicator} from '../../components/LoaderActivityIndicator';
+import {Title} from '../../components/Title';
 
 export const HomeScreen = () => {
   const {loader, trendingMovies} = useSelector((state: RootState) => state);
@@ -48,7 +49,6 @@ export const HomeScreen = () => {
   const handleLoadMore = useCallback(async () => {
     setLoadingMore(true);
     const {data, error} = await trendingMovieDay(page);
-    console.log('data', data);
 
     if (data) {
       dispatch(setTrendingMovies(data.results));
@@ -88,6 +88,7 @@ export const HomeScreen = () => {
         title={'Details'}
         onPress={() => navigation.navigate(ScreenEnum.DetailsScreen)}
       />
+      <Title text={trendingMovies.length > 0 ? 'Popular movies:' : undefined} />
       <FlatList
         data={trendingMovies}
         renderItem={({item}) => (

@@ -12,7 +12,11 @@ const Stack = createStackNavigator();
 
 const TabsStack = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Tab.Screen name={ScreenEnum.HomeScreen} component={HomeScreen} />
       <Tab.Screen
         name={ScreenEnum.FavoriteFilmsScreen}
