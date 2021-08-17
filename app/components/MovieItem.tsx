@@ -12,21 +12,22 @@ interface MovieItemProps {
   addFavorite?: (item: TrendingMovie) => void;
 }
 export const MovieItem = ({item, onPress, addFavorite}: MovieItemProps) => {
-  const {id: movieId, imgUrl: imagePath, title} = item;
-
   return (
-    <TouchableOpacity onPress={() => onPress(movieId)} style={styles.container}>
+    <TouchableOpacity
+      onPress={() => onPress(item?.id)}
+      style={styles.container}
+    >
       <View style={styles.contentContainer}>
-        {imagePath && (
+        {item?.imgUrl && (
           <Image
             style={styles.img}
             resizeMode="contain"
             source={{
-              uri: `${API_IMAGE_URI}${imagePath}`,
+              uri: `${API_IMAGE_URI}${item.imgUrl}`,
             }}
           />
         )}
-        <Text style={styles.title}>{title}</Text>
+        {item?.title && <Text style={styles.title}>{item.title}</Text>}
       </View>
       {addFavorite && (
         <TouchableOpacity

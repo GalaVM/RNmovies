@@ -4,7 +4,7 @@ import {
   NavigationProp,
   ParamListBase,
 } from '@react-navigation/native';
-import {Button, FlatList, StyleSheet, Text} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {ScreenEnum} from '../types';
@@ -26,6 +26,7 @@ import {useAsyncStorage} from '../../helpers/asyncStorage';
 import {NETWORK_ERROR, TRENDING_MOVIES} from '../../helpers/constants';
 import {RootContainer} from '../../components/RootContainer';
 import {setFavoriteMovies} from '../../services/favoriteMoviesSlice';
+import {getMovieDetails} from '../../api/movieDetails';
 
 export const HomeScreen = () => {
   const {loader, trendingMovies} = useSelector((state: RootState) => state);
@@ -101,10 +102,17 @@ export const HomeScreen = () => {
     }
   }, [getStorageItem, errorText]);
 
-  const isList = Boolean(storageList.length > 0 || trendingMovies.length > 0);
+  const isList = storageList.length > 0 || trendingMovies.length > 0;
 
   const addFavorite = (item: TrendingMovie) => {
     dispatch(setFavoriteMovies(item));
+  };
+
+  const getDetails = async (id: string) => {
+    const item = await getMovieDetails(id);
+    if (item) {
+      navigation.navigate(ScreenEnum.DetailsScreen, {item});
+    }
   };
 
   return (
@@ -115,19 +123,15 @@ export const HomeScreen = () => {
         handleClose={() => setErrorText('')}
         errorText={errorText}
       />
-      <Button title={'get popular'} onPress={getList} />
-      <Button
-        title={'reset'}
+      <TouchableOpacity
         onPress={() => {
           setPage(1);
           removeStorageItem(TRENDING_MOVIES);
           dispatch(cleanupMovies());
         }}
-      />
-      <Button
-        title={'Details'}
-        onPress={() => navigation.navigate(ScreenEnum.DetailsScreen)}
-      />
+      >
+        <Text>reset all</Text>
+      </TouchableOpacity>
       <Title text={trendingMovies.length > 0 ? 'Popular movies:' : undefined} />
       {isList && (
         <FlatList
@@ -135,7 +139,7 @@ export const HomeScreen = () => {
           renderItem={({item}: {item: TrendingMovie}) => (
             <MovieItem
               item={item}
-              onPress={() => {}}
+              onPress={getDetails}
               addFavorite={addFavorite}
             />
           )}
