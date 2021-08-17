@@ -5,8 +5,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {ScreenEnum} from '../screens/types';
 import {HomeScreen} from '../screens/tab/HomeScreen';
 import {FavoriteFilmsScreen} from '../screens/tab/FavoriteFilmsScreen';
-import {DetailsGeneralScreen} from '../screens/stack/DetailsGeneralScreen';
+import {DetailsScreen} from '../screens/stack/DetailsScreen';
 import {HeaderRightBtn} from '../components/HeaderRightBtn';
+import {DetailsHeader} from '../components/DetailsHeader';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -48,12 +49,15 @@ export const RootStack = () => {
       >
         <Stack.Screen name={'TabsStack'} component={TabsStack} />
         <Stack.Screen
-          options={{
+          options={({route}: any) => ({
             headerShown: true,
             headerBackTitle: 'Back',
-          }}
+            headerTitle: () => (
+              <DetailsHeader title={route?.params?.item.filmTitle} />
+            ),
+          })}
           name={ScreenEnum.DetailsScreen}
-          component={DetailsGeneralScreen}
+          component={DetailsScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
