@@ -6,7 +6,6 @@ import {ScreenEnum} from '../screens/types';
 import {HomeScreen} from '../screens/tab/HomeScreen';
 import {FavoriteFilmsScreen} from '../screens/tab/FavoriteFilmsScreen';
 import {DetailsGeneralScreen} from '../screens/stack/DetailsGeneralScreen';
-import {TouchableOpacity} from 'react-native';
 import {HeaderRightBtn} from '../components/HeaderRightBtn';
 
 const Tab = createBottomTabNavigator();
@@ -31,6 +30,7 @@ const TabsStack = () => {
         component={FavoriteFilmsScreen}
         options={{
           headerShown: true,
+          headerTitle: 'Your favorite Movies',
           tabBarIcon: () => null,
           headerRight: () => <HeaderRightBtn />,
         }}
