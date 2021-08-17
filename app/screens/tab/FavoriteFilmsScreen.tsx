@@ -1,9 +1,11 @@
+import React, {useState} from 'react';
+
 import {
   NavigationProp,
   ParamListBase,
   useNavigation,
 } from '@react-navigation/native';
-import React from 'react';
+
 import {Text, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
@@ -22,7 +24,10 @@ export const FavoriteFilmsScreen = () => {
   const getDetails = async (id: string) => {
     const item = await getMovieDetails(id);
     if (item) {
-      navigation.navigate(ScreenEnum.DetailsScreen, {item});
+      navigation.navigate(ScreenEnum.DetailsScreen, {
+        item,
+        isFavorite: true,
+      });
     }
   };
 

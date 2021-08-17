@@ -13,6 +13,7 @@ const API_IMAGE_URI = Config.API_IMAGE_URL;
 
 export interface DetailsScreenProps {
   item: Details;
+  isFavorite?: boolean;
 }
 
 export type DetailsScreenNavProps = StackScreenProps<

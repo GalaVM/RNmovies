@@ -15,9 +15,10 @@ const favoriteMoviesSlice = createSlice({
     setFavoriteMovies: (state, action: PayloadAction<FavoriteMovie>) => {
       return [...state, action.payload];
     },
-
-    cleanupFavorite: () => {
-      return initialState;
+    cleanupFavorite: (state, action: PayloadAction<string>) => {
+      return state.filter(
+        (elem) => elem?.id.toString() !== action.payload.toString(),
+      );
     },
   },
 });

@@ -67,6 +67,7 @@ export type Details = {
   filmDesc: string;
   filmPoster: string;
   filmTitle: string;
+  id: '';
 };
 
 export const getMovieDetails = async (id: string) => {
@@ -75,6 +76,7 @@ export const getMovieDetails = async (id: string) => {
     filmDesc: '',
     filmPoster: '',
     filmTitle: '',
+    id: '',
   };
 
   const {data: desc} = await getDescription(id);
@@ -84,6 +86,7 @@ export const getMovieDetails = async (id: string) => {
       filmDesc: desc?.overview ? desc.overview : '',
       filmPoster: desc?.poster_path ? desc.poster_path : '',
       filmTitle: desc?.title ? desc?.title : '',
+      id: desc?.id,
     };
   }
   const {data: cast} = await getCast(id);

@@ -4,13 +4,7 @@ import {
   NavigationProp,
   ParamListBase,
 } from '@react-navigation/native';
-import {
-  Button,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {ScreenEnum} from '../types';
