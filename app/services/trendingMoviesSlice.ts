@@ -1,9 +1,9 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {TrendingMovieDay} from '../api/trendingMovie';
 
-interface TrendingMovie {
+export interface TrendingMovie {
   id: string;
-  imgUrl: string | null;
+  imgUrl: string;
   title: string;
 }
 
