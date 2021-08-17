@@ -6,6 +6,7 @@ import {ScreenEnum} from '../screens/types';
 import {HomeScreen} from '../screens/tab/HomeScreen';
 import {FavoriteFilmsScreen} from '../screens/tab/FavoriteFilmsScreen';
 import {DetailsGeneralScreen} from '../screens/stack/DetailsGeneralScreen';
+import {HeaderRightBtn} from '../components/HeaderRightBtn';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -28,7 +29,10 @@ const TabsStack = () => {
         name={ScreenEnum.FavoriteFilmsScreen}
         component={FavoriteFilmsScreen}
         options={{
+          headerShown: true,
+          headerTitle: 'Your favorite Movies',
           tabBarIcon: () => null,
+          headerRight: () => <HeaderRightBtn />,
         }}
       />
     </Tab.Navigator>
