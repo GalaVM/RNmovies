@@ -17,10 +17,19 @@ const TabsStack = () => {
         headerShown: false,
       }}
     >
-      <Tab.Screen name={ScreenEnum.HomeScreen} component={HomeScreen} />
+      <Tab.Screen
+        name={ScreenEnum.HomeScreen}
+        component={HomeScreen}
+        options={{
+          tabBarIcon: () => null,
+        }}
+      />
       <Tab.Screen
         name={ScreenEnum.FavoriteFilmsScreen}
         component={FavoriteFilmsScreen}
+        options={{
+          tabBarIcon: () => null,
+        }}
       />
     </Tab.Navigator>
   );

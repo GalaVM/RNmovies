@@ -4,7 +4,7 @@ import {
   NavigationProp,
   ParamListBase,
 } from '@react-navigation/native';
-import {Button, SafeAreaView, FlatList, StyleSheet} from 'react-native';
+import {Button, SafeAreaView, FlatList, StyleSheet, Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {ScreenEnum} from '../types';
@@ -21,9 +21,13 @@ import {MovieItem} from '../../components/MovieItem';
 import {white} from '../../styles/constants';
 import {LoaderActivityIndicator} from '../../components/LoaderActivityIndicator';
 import {Title} from '../../components/Title';
+import {useAsyncStorage} from '../../helpers/asyncStorage';
+import {NETWORK_ERROR, TRENDING_MOVIES} from '../../helpers/constants';
 
 export const HomeScreen = () => {
   const {loader, trendingMovies} = useSelector((state: RootState) => state);
+  const {setStorage, getStorageItem, removeStorageItem} = useAsyncStorage();
+
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 
   const dispatch = useDispatch();
@@ -31,6 +35,8 @@ export const HomeScreen = () => {
   const [page, setPage] = useState(1);
   const [errorText, setErrorText] = useState<string>('');
   const [loadingMore, setLoadingMore] = useState(false);
+
+  const [storageList, setStorageList] = useState([]);
 
   const getList = useCallback(async () => {
     dispatch(setLoading(true));
@@ -40,7 +46,9 @@ export const HomeScreen = () => {
       dispatch(setTrendingMovies(data.results));
     }
     if (error) {
-      setErrorText(error.message);
+      if (error) {
+        setErrorText(error?.message);
+      }
     }
 
     dispatch(setLoading(false));
@@ -54,7 +62,7 @@ export const HomeScreen = () => {
       dispatch(setTrendingMovies(data.results));
     }
     if (error) {
-      setErrorText(error.message);
+      setErrorText(error?.message);
     }
     setLoadingMore(false);
   }, [dispatch, page]);
@@ -68,11 +76,35 @@ export const HomeScreen = () => {
     }
   }, [getList, handleLoadMore, page]);
 
+  useEffect(() => {
+    const addStorage = async () => {
+      await setStorage(TRENDING_MOVIES, trendingMovies);
+    };
+    addStorage();
+  }, [setStorage, trendingMovies]);
+
+  useEffect(() => {
+    const getStorageData = async () => {
+      const data = await getStorageItem(TRENDING_MOVIES);
+      if (data) {
+        setStorageList(data);
+      } else {
+        console.log('error getStorageItem');
+      }
+    };
+
+    if (errorText === NETWORK_ERROR) {
+      getStorageData();
+    }
+  }, [getStorageItem, errorText]);
+
+  const isList = Boolean(storageList.length > 0 || trendingMovies.length > 0);
+
   return (
     <SafeAreaView style={styles.container}>
       <Loader isLoading={loader} />
       <ErrorToast
-        visible={!!errorText}
+        visible={!!errorText && errorText !== NETWORK_ERROR}
         handleClose={() => setErrorText('')}
         errorText={errorText}
       />
@@ -81,6 +113,7 @@ export const HomeScreen = () => {
         title={'reset'}
         onPress={() => {
           setPage(1);
+          removeStorageItem(TRENDING_MOVIES);
           dispatch(cleanupMovies());
         }}
       />
@@ -89,24 +122,29 @@ export const HomeScreen = () => {
         onPress={() => navigation.navigate(ScreenEnum.DetailsScreen)}
       />
       <Title text={trendingMovies.length > 0 ? 'Popular movies:' : undefined} />
-      <FlatList
-        data={trendingMovies}
-        renderItem={({item}) => (
-          <MovieItem
-            movieId={item.id}
-            title={item.title}
-            imagePath={item.imgUrl}
-            onPress={() => {}}
-          />
-        )}
-        keyExtractor={(item, index) => index.toString()}
-        onEndReached={() => setPage(page + 1)}
-        onEndReachedThreshold={0}
-        contentContainerStyle={styles.list}
-        ListFooterComponent={
-          <LoaderActivityIndicator loadingMore={loadingMore} />
-        }
-      />
+      {isList && (
+        <FlatList
+          data={trendingMovies.length > 0 ? trendingMovies : storageList}
+          renderItem={({item}) => (
+            <MovieItem
+              movieId={item.id}
+              title={item.title}
+              imagePath={item.imgUrl}
+              onPress={() => {}}
+            />
+          )}
+          keyExtractor={(item, index) => index.toString()}
+          onEndReached={() => setPage(page + 1)}
+          onEndReachedThreshold={0}
+          contentContainerStyle={styles.list}
+          ListFooterComponent={
+            <LoaderActivityIndicator loadingMore={loadingMore} />
+          }
+        />
+      )}
+      {storageList.length === 0 && errorText === NETWORK_ERROR && (
+        <Text>Oops... something went wrong</Text>
+      )}
     </SafeAreaView>
   );
 };

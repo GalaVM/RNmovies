@@ -38,6 +38,7 @@ export const trendingMovieDay = async (
     const response = await axios({
       method: 'get',
       url: `${API_URI}/trending/movie/day`,
+      headers: {'content-type': 'application/x-www-form-urlencoded'},
       params: {
         api_key: `${API_KEY}`,
         page: pageId,
